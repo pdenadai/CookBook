@@ -44,4 +44,5 @@ public class Ingrediente {
     public int hashCode() {
         return nome.hashCode();
     }
+
 }

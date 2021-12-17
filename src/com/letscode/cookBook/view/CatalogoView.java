@@ -3,13 +3,14 @@ package com.letscode.cookBook.view;
 import com.letscode.cookBook.controller.Catalogo;
 import com.letscode.cookBook.domain.Receita;
 import com.letscode.cookBook.enums.Categoria;
+import com.letscode.cookBook.view.ScreenUtil;
 
 import java.util.Scanner;
 
 public class CatalogoView {
     private final Receita NONE_FOUND = new Receita("Nenhuma receita encontrada", Categoria.PRATO_UNICO);
     private Receita receita;
-    Catalogo controller;
+    private Catalogo controller = new Catalogo(1,"Variados");
     private int curIndex = -1;
 
     private void showHeader() {
@@ -23,23 +24,36 @@ public class CatalogoView {
     }
 
     private void showReceita(Receita receita) {
+        System.out.printf("%d° Receita \n#: ", this.curIndex+1);
         System.out.println(receita.toString());
     }
 
     private void showAnterior() {
-        if (curIndex > 0) {
+        if (curIndex-1 >= 0) {
             this.receita = controller.getReceita(curIndex - 1);
             if (receita != null) curIndex--;
+            show();
+        }else{
+            System.out.println("Não existe receita anterior.");
         }
     }
 
     private void showSeguinte() {
-        this.receita = controller.getReceita(curIndex + 1);
-        if (receita != null) curIndex++;
+        if (curIndex+1 <= controller.getSize()){
+            this.receita = controller.getReceita(curIndex + 1);
+            if (receita != null) curIndex++;
+            show();
+        }else{
+            System.out.println("Não existe próxima receita.");
+        }
     }
 
     private void add() {
-        //TODO: Implement Add
+        NovaReceitaView novaReceitaView = new NovaReceitaView();
+        this.receita = novaReceitaView.criar();
+        controller.add(this.receita);
+        this.curIndex = controller.getSize();
+        show();
     }
 
     private void del() {

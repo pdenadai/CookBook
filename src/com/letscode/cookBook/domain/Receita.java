@@ -2,19 +2,17 @@ package com.letscode.cookBook.domain;
 
 import com.letscode.cookBook.enums.Categoria;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Receita {
     private String nome;
     private Categoria categoria;
     private int tempoPreparo;
     private Rendimento rendimento;
-    private List<Ingrediente> ingredientes;
+    private Ingrediente[] ingredientes;
     private String[] modoPreparo;
 
     public Receita(String nome, Categoria categoria) {
-        this.ingredientes = new ArrayList<>();
         this.nome = nome;
         this.categoria = categoria;
     }
@@ -51,14 +49,12 @@ public class Receita {
         this.rendimento = rendimento;
     }
 
-    public List<Ingrediente> getIngredientes() {
+    public Ingrediente[] getIngredientes() {
         return ingredientes;
     }
 
     public void setIngredientes(Ingrediente[] ingredientes) {
-        for (Ingrediente item : ingredientes) {
-            this.ingredientes.add(item);
-        }
+        this.ingredientes = ingredientes;
     }
 
     public String[] getModoPreparo() {
@@ -70,28 +66,12 @@ public class Receita {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Receita receita = (Receita) o;
-
-        return nome.equals(receita.nome);
-    }
-
-    @Override
-    public int hashCode() {
-        return nome.hashCode();
-    }
-
-    @Override
     public String toString() {
-        int segundos = tempoPreparo % 60;
-        int minutos = tempoPreparo > 60 ? tempoPreparo % (60*60) : 0;
-        int horas = tempoPreparo > 60*60 ? tempoPreparo % (60*60*24) : 0;
-        String tempo = horas > 0 ? horas + " horas " : "";
-        tempo += minutos > 0 ? minutos + " minutos " : "";
-        tempo += segundos > 0 ? segundos + " segundos " : "";
-        return String.format("%s%n\t%s%n%nRendimento: %s%nTempo: %s%nIngredientes:%n%s%nModo de preparo:%n%s", nome, categoria, rendimento, tempo, ingredientes, modoPreparo);
+        return  "\tnome: \n\t\t" + nome + '\n' +
+                "\tcategoria: \n\t\t" + categoria + '\n' +
+                "\ttempoPreparo: \n\t\t" + tempoPreparo + '\n' +
+                "\trendimento: \n\t\t" + rendimento + '\n' +
+                "\tingredientes: \n\t\t" + Arrays.toString(ingredientes) + '\n' +
+                "\tmodoPreparo: \n\t\t" + Arrays.toString(modoPreparo) + '\n';
     }
 }
